@@ -1,0 +1,1 @@
+java -jar .\filereceive.jar --server.port=8001 --filereceive.location=e:/tmp/

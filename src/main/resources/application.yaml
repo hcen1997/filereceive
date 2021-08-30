@@ -1,0 +1,10 @@
+server:
+  port: 8543
+
+filereceive:
+  location: d:/tmp/
+  token: 0Cew8bohP9ka1c0hWHypbNv4sMyWnZsBn1dpjvHvL3Csj3NbA7pYin8JnP7JQRj2a3pUQ72JhzzqNXWEEl5dGqpjGjrAsRFhrWpL8CYsEFlOuEGG3sOP2fR96wvh3Oiq
+logging:
+  path: ./
+  file: file-receive.log
+  file.max-history: 5
