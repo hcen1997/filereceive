@@ -11,12 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @SpringBootApplication
 @RestController
-public class FileReceiveApp  implements CommandLineRunner {
+public class FileReceiveApp implements CommandLineRunner {
 
-   private static   Logger LOG = LoggerFactory.getLogger(FileReceiveApp.class);
+    private static Logger LOG = LoggerFactory.getLogger(FileReceiveApp.class);
 
     @Autowired
     FileReceiveConfig config;
@@ -49,9 +50,34 @@ public class FileReceiveApp  implements CommandLineRunner {
         return "ok";
     }
 
+    // todo : 每隔10分钟自动生成token
+    // todo: 文件重名策略: 覆盖/重命名/拒绝?  默认覆盖
+
+    // 怎么才可以用配置暴露接口呢?
+    @PostMapping("/api/put")
+    public String apiput(@RequestPart("token") String token,
+                         @RequestPart("files") List<MultipartFile> files) {
+
+        if (!config.getToken().equals(token)) {
+            LOG.info("有人尝试错误的token: " + token);
+            return "token not right";
+        }
+        for (MultipartFile file : files) {
+            String originalFilename = file.getOriginalFilename();
+            try {
+                file.transferTo(new File(config.getLocation() + originalFilename));
+            } catch (IOException e) {
+                LOG.error("文件接收异常, file name: " + file);
+                e.printStackTrace();
+            }
+            LOG.info(String.format("文件接收成功, 文件名: %s , 大小: %skb", file.getOriginalFilename(), file.getSize() / 1024));
+        }
+        return "ok";
+    }
+
     @Override
-    public void run(String... args)  {
-        LOG.info("传送文件路径: "+ config.getLocation());
-        LOG.info("token: "+ config.getToken());
+    public void run(String... args) {
+        LOG.info("传送文件路径: " + config.getLocation());
+        LOG.info("token: " + config.getToken());
     }
 }
