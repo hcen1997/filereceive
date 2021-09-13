@@ -79,5 +79,6 @@ public class FileReceiveApp implements CommandLineRunner {
     public void run(String... args) {
         LOG.info("传送文件路径: " + config.getLocation());
         LOG.info("token: " + config.getToken());
+        LOG.info("使用方式: POST host:port/put multipart/form token file");
     }
 }

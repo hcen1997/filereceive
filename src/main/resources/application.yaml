@@ -8,3 +8,8 @@ logging:
   path: ./
   file: file-receive.log
   file.max-history: 5
+#  level:
+#    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: trace
+#
+#debug: true
+
